@@ -14,7 +14,12 @@ import Foundation
 
 class ViewController: UIViewController {
     
-    var numberOnCounter = 0 {
+    
+    @IBOutlet weak var textView: UITextView!
+    
+    @IBOutlet weak var counterLabel: UILabel!
+    
+    fileprivate  var numberOnCounter = 0 {
         didSet {
             if numberOnCounter < 0 {
                 numberOnCounter = 0
@@ -22,21 +27,24 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func resetButton(_ sender: UIButton) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateLabel()
+        textView.text = "История изменений:"
+    }
+    
+    @IBAction func resetButtonTapped(_ sender: UIButton) {
         numberOnCounter = 0
         updateLabel()
         updateTextView(textToUpdate: "Значение сброшено")
     }
-    @IBOutlet weak var textView: UITextView!
     
-    @IBOutlet weak var counterLabel: UILabel!
-    
-    @IBAction func plusButton(_ sender: UIButton) {
+    @IBAction func plusButtonTapped(_ sender: UIButton) {
         numberOnCounter += 1
         updateLabel()
         updateTextView(textToUpdate: "значение изменено на +1")
     }
-    @IBAction func minusButton(_ sender: Any) {
+    @IBAction func minusButtonTapped(_ sender: Any) {
         
         if numberOnCounter > 0 {
             numberOnCounter -= 1
@@ -47,27 +55,19 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateLabel()
-        textView.text = "История изменений:"
-    }
+    fileprivate func updateLabel(){
+         counterLabel.text = "\(numberOnCounter)"
+     }
+     
+    fileprivate func updateTextView(textToUpdate: String){
+         
+         let dateFormatter = DateFormatter()
+         dateFormatter.dateStyle = .short
+         dateFormatter.timeStyle = .medium
+         let formattedDate = dateFormatter.string(from: Date())
+         
+         textView.text = "История изменений: \n \(formattedDate) \(textToUpdate)"
+     }
     
-    func updateLabel(){
-        counterLabel.text = "\(numberOnCounter)"
-    }
-    
-    func updateTextView(textToUpdate: String){
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
-        let formattedDate = dateFormatter.string(from: Date())
-        
-        textView.text = "История изменений: \n \(formattedDate) \(textToUpdate)"
-    }
-    
-
-
 }
 
